@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 隐私合规接口与权限申请
+        // 隐私合规接口
         privacyAbout();
 
 
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, "128初始化成功", Toast.LENGTH_SHORT).show();
     }
 
-    // 隐私合规与权限申请
+    // 隐私合规
     private void privacyAbout() {
         //隐私合规接口
         MapsInitializer.updatePrivacyShow(this, true, true);
@@ -138,12 +137,6 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
         }
-
-//        // Android 13及以上需要请求后台定位权限
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-//                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 101);
-//        }
     }
 
     private void sensorRegister() {
@@ -165,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         sensorManager.registerListener(sensorEventListener, gravitySensor, SensorManager.SENSOR_DELAY_UI);
         sensorManager.registerListener(sensorEventListener, magneticFieldSensor, SensorManager.SENSOR_DELAY_UI);
 
-        Toast.makeText(MainActivity.this, "159传感器初始化成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "161传感器初始化成功", Toast.LENGTH_SHORT).show();
     }
 
     // 传感器监听
@@ -244,22 +237,6 @@ public class MainActivity extends AppCompatActivity {
             mLocMarker.setRotateAngle(currentAzimuth);  // 使用设备朝向更新定位标记的朝向
         }
     }
-
-    // 权限处理
-    // 当权限请求结果返回时，处理权限的结果
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == 100) {  // 你请求定位权限时的请求码
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // 权限被授予，继续初始化定位
-//                initLocation();
-//            } else {
-//                // 权限被拒绝，提示用户无法使用定位功能
-//                Toast.makeText(this, "没有定位权限，无法使用定位功能", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 
     // 初始化地图
     private void initMap(Bundle savedInstanceState) {
@@ -350,11 +327,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                         // 获取当前的缩放级别
                         float currentZoomLevel = aMap.getCameraPosition().zoom;
+//                        aMap.setMyLocationEnabled(true);
                         // 移动相机到当前位置，但不改变缩放级别
                         aMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)); // 移动并缩放到当前位置
-//                        locationClient.startLocation();
-//                        aMap.setMyLocationEnabled(true);  // 启用定位蓝点
-//                        Toast.makeText(MainActivity.this, "定位初始化成功", Toast.LENGTH_SHORT).show();
+                        locationClient.startLocation();
+//                        Toast.makeText(MainActivity.this, "334定位成功", Toast.LENGTH_SHORT).show();
                     }
 
                     // 确保只设置一次样式
@@ -363,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
                         aMap.setMyLocationStyle(myLocationStyle); // 设置样式
                         aMap.setMyLocationEnabled(true); // 启用定位图层
                     }
+
                 } else {
                     Toast.makeText(MainActivity.this, "定位失败", Toast.LENGTH_SHORT).show();
                 }
@@ -442,6 +420,8 @@ public class MainActivity extends AppCompatActivity {
 
             // 保存轨迹数据到文件
             saveTrackToFile(trackPoints);
+
+//            Toast.makeText(this, "更新成功", Toast.LENGTH_SHORT).show();
         }
     }
 
